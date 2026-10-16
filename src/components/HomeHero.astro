@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import { home } from '../config/home';
+import { pathFor } from '../lib/paths';
+import SocialLinks from './SocialLinks.astro';
+---
+<section class="home-hero" aria-labelledby="home-title">
+  <Image class="hero-image" src={home.hero.image} alt={home.hero.imageAlt} widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 58vw, 100vw" width={1600} height={860} fit="cover" loading="eager" fetchpriority="high" quality={85} />
+  <div class="hero-copy">
+    <p class="eyebrow">{home.hero.eyebrow}</p>
+    <h1 id="home-title">{home.hero.title.map((line) => <span>{line}</span>)}</h1>
+    <span class="accent-rule" aria-hidden="true"></span>
+    <SocialLinks />
+    <a class="text-link about-link" href={pathFor('about/')}>{home.hero.aboutLabel}<span aria-hidden="true">→</span></a>
+  </div>
+</section>

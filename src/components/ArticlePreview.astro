@@ -1,0 +1,19 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { categories } from '../config/site';
+import { calendarDate, formatDate } from '../lib/post-utils';
+import { pathFor, postPath } from '../lib/paths';
+interface Props { post: CollectionEntry<'blog'>; index: number; headingLevel?: 'h2' | 'h3' }
+const { post, index, headingLevel: Heading = 'h3' } = Astro.props;
+---
+<article class:list={['article-preview', { 'article-preview--text': !post.data.cover }]}>
+  {post.data.cover && <a class="preview-cover" href={postPath(post.id)} aria-label={`阅读：${post.data.title}`} tabindex="-1"><Image src={post.data.cover} alt={post.data.coverAlt ?? ''} widths={[160, 320, 480]} sizes="(min-width: 1024px) 11vw, (min-width: 640px) 20vw, 30vw" width={320} height={440} fit="cover" loading="lazy" quality={82} /></a>}
+  <div class="preview-body">
+    <div class="preview-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}<span></span></div>
+    <div class="preview-meta"><a href={pathFor(`categories/${post.data.category}/`)}>{categories[post.data.category].label}</a>{post.data.sample && <span class="sample-label">排版示例</span>}</div>
+    <Heading class="preview-title"><a href={postPath(post.id)}>{post.data.title}</a></Heading>
+    <p class="preview-description">{post.data.description}</p>
+    <time datetime={calendarDate(post.data.pubDate)}>{formatDate(post.data.pubDate)}</time>
+  </div>
+</article>

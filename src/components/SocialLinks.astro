@@ -1,0 +1,9 @@
+---
+import SocialIcon from './SocialIcon.astro';
+import { site } from '../config/site';
+---
+<ul class="social-links" aria-label="社交主页">
+  {site.socials.map((social) => <li>
+    {social.href ? <a class="social-link" href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`${social.label}，在新标签页打开`} title={social.label}><SocialIcon name={social.name} /></a> : <span class="social-link social-link--placeholder" role="img" aria-label={`${social.label}（暂未设置链接）`} title={`${social.label} · 链接待添加`}><SocialIcon name={social.name} /></span>}
+  </li>)}
+</ul>

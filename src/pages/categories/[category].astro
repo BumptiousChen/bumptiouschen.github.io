@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import ArticlePreview from '../../components/ArticlePreview.astro';
+import { categories, type Category } from '../../config/site';
+import { getPublicPosts } from '../../lib/posts';
+import { pathFor } from '../../lib/paths';
+export function getStaticPaths() {
+  return Object.entries(categories).map(([category, info]) => ({ params: { category }, props: { category: category as Category, info } }));
+}
+const { category, info } = Astro.props;
+const posts = (await getPublicPosts()).filter((post) => post.data.category === category);
+---
+<BaseLayout title={info.label} description={info.description}>
+  <section class="page-intro"><p class="eyebrow">{category.toUpperCase()}</p><h1>{info.label}手记</h1><p>{info.description}</p></section>
+  <CategoryNav current={category} />
+  <div class="archive-list">{posts.map((post, index) => <ArticlePreview post={post} index={index} headingLevel="h2" />)}</div>
+  {!posts.length && <div class="empty-state"><p>这一页还在慢慢积累。</p><a class="text-link" href={pathFor('posts/')}>看看其他文章 →</a></div>}
+</BaseLayout>

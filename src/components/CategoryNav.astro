@@ -1,0 +1,10 @@
+---
+import { categories } from '../config/site';
+import { pathFor } from '../lib/paths';
+interface Props { current?: string }
+const { current } = Astro.props;
+---
+<nav class="category-nav" aria-label="文章分类">
+  <a href={pathFor('posts/')} aria-current={!current ? 'page' : undefined}>全部</a>
+  {Object.entries(categories).map(([key, value]) => <a href={pathFor(`categories/${key}/`)} aria-current={current === key ? 'page' : undefined}>{value.label}</a>)}
+</nav>

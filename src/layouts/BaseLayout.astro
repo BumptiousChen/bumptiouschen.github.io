@@ -1,7 +1,19 @@
----
+﻿---
+import { site } from '../config/site';
+import { pathFor } from '../lib/paths';
+import shareImage from '../assets/images/hero.png';
 interface Props { title: string; description?: string }
-const { title, description = '记录技术、开发与生活。' } = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { title, description = site.description } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const root = pathFor().replace(/\/+$/, '') || '/';
+const gamePath = pathFor('categories/game/').replace(/\/+$/, '');
+const nav = [
+  { label: '首页', href: pathFor(), active: pathname === root },
+  { label: '文章', href: pathFor('posts/'), active: pathname.includes('/posts') || (pathname.includes('/categories/') && pathname !== gamePath) },
+  { label: '游戏', href: pathFor('categories/game/'), active: pathname === gamePath },
+  { label: '关于', href: pathFor('about/'), active: pathname.endsWith('/about') },
+];
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -9,22 +21,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} · Solaris Blog</title>
-    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
-    <link rel="stylesheet" href={`${base}/style.css`} />
+    <meta name="theme-color" content="#faf8f3" />
+    <title>{title} · {site.name}</title>
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={`${title} · ${site.name}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(shareImage.src, Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href={pathFor('favicon.svg')} />
+    <link rel="stylesheet" href={pathFor('style.css')} />
+    <link rel="stylesheet" href={pathFor('fonts/fonts.css')} />
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand" href={`${base}/`}>Solaris<span>.</span></a>
-        <nav aria-label="主导航">
-          <a href={`${base}/`}>首页</a>
-          <a href={`${base}/posts/`}>文章</a>
-          <a href={`${base}/about/`}>关于</a>
-        </nav>
+    <a class="skip-link" href="#main-content">跳到正文</a>
+    <header class="site-header container">
+      <div class="header-inner">
+        <a class="brand" href={pathFor()} aria-label={`${site.name} 首页`}>{site.name}<span lang="ja">{site.subtitle}</span></a>
+        <nav class="main-nav" aria-label="主导航">{nav.map((item) => <a href={item.href} aria-current={item.active ? 'page' : undefined}>{item.label}</a>)}</nav>
       </div>
     </header>
-    <main class="container"><slot /></main>
-    <footer class="site-footer container">© {new Date().getFullYear()} Solaris · 记录与分享</footer>
+    <main id="main-content" class="container" tabindex="-1"><slot /></main>
+    <footer class="site-footer container">
+      <div class="footer-brand"><a href={pathFor()}>{site.name}</a><span class="footer-subtitle">休日手帖</span><span class="footer-note" lang="ja">{site.footerNote}</span></div>
+      <p>© {new Date().getFullYear()} {site.name}<span aria-hidden="true"> · </span>在平凡的日子里，收集喜欢。</p>
+    </footer>
   </body>
 </html>

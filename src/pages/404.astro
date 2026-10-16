@@ -1,0 +1,5 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pathFor } from '../lib/paths';
+---
+<BaseLayout title="这一页，暂时迷路了"><section class="page-intro empty-state"><p class="eyebrow">404 · NOT FOUND</p><h1>这一页，暂时迷路了。</h1><p>不妨回到熟悉的地方，继续慢慢逛。</p><div class="error-links"><a class="text-link" href={pathFor()}>回到首页 →</a><a class="text-link" href={pathFor('posts/')}>看看文章 →</a></div></section></BaseLayout>

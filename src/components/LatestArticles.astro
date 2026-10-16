@@ -1,0 +1,12 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticlePreview from './ArticlePreview.astro';
+import { home } from '../config/home';
+import { pathFor } from '../lib/paths';
+interface Props { posts: CollectionEntry<'blog'>[] }
+const { posts } = Astro.props;
+---
+<section class="latest-articles" aria-labelledby="latest-heading">
+  <div class="section-heading"><h2 id="latest-heading">{home.latest.title}</h2><span class="section-rule" aria-hidden="true"></span><a href={pathFor('posts/')}>{home.latest.allLabel}<span aria-hidden="true"> →</span></a></div>
+  {posts.length ? <div class="latest-grid">{posts.map((post, index) => <ArticlePreview post={post} index={index} />)}</div> : <p class="empty-state">{home.latest.emptyMessage}</p>}
+</section>

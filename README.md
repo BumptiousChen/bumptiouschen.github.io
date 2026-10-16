@@ -7,9 +7,9 @@
 在 PowerShell 中执行：
 
 ```powershell
-cd D:\Soalris\Solaris.github.io
+cd D:\Soalris\bumptiouschen.github.io
 npm.cmd install
 npm.cmd run dev
 ```
 
-在 `src/content/blog/` 中添加 Markdown 文件即可写新文章。推送到 `main` 后自动部署到 <https://bumptiouschen.github.io/Solaris.github.io/>。
+在 `src/content/blog/` 中添加 Markdown 文件即可写新文章。推送到 `main` 后自动部署到 <https://bumptiouschen.github.io/>。

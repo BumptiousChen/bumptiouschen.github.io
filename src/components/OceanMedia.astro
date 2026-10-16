@@ -1,0 +1,16 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const media = `${base}/media/p3r`;
+---
+<div class="ocean-media" aria-hidden="true">
+  <picture class="ocean-poster">
+    <source media="(max-width: 750px)" srcset={`${media}/poster-mobile.webp`} />
+    <img src={`${media}/poster-desktop.webp`} alt="" width="960" height="540" fetchpriority="high" />
+  </picture>
+  <video data-hero-loop data-desktop={`${media}/loop-desktop.mp4`} data-mobile={`${media}/loop-mobile.mp4`} muted playsinline loop preload="none" tabindex="-1"></video>
+  <video data-hero-opening data-desktop={`${media}/opening-desktop.mp4`} data-mobile={`${media}/opening-mobile.mp4`} muted playsinline preload="none" tabindex="-1"></video>
+</div>
+<picture class="hologram-layer" aria-hidden="true">
+  <source media="(max-width: 750px)" srcset={`${media}/hologram-mobile.webp`} />
+  <img src={`${media}/hologram-desktop.webp`} alt="" width="1920" height="1080" />
+</picture>
